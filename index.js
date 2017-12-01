@@ -70,8 +70,6 @@ var aliyunWeather=async (appCode, cityId)=>{
     })
 }
 
-aliyunWeather(APP_CODE,CITY_ID)
-
 //工作日配置
 var ruleWork = new schedule.RecurrenceRule();
 ruleWork.dayOfWeek = [new schedule.Range(1, 5)];
