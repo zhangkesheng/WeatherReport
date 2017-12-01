@@ -9,6 +9,7 @@ const SIGN_NAME = config.SIGN_NAME;
 const TEMPLATE_CODE = config.TEMPLATE_CODE;
 const TARGET_PHONE = config.TARGET_PHONE;
 const APP_CODE = config.APP_CODE;
+const CITY_ID = config.CITYID;
 
 console.log("配置文件如下\n%s\n",JSON.stringify(config, null, "\t"))
 
@@ -69,7 +70,7 @@ var aliyunWeather=async (appCode, cityId)=>{
     })
 }
 
-aliyunWeather(APP_CODE,CITYID)
+aliyunWeather(APP_CODE,CITY_ID)
 
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [new schedule.Range(0, 6)];
