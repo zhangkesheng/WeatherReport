@@ -5,8 +5,9 @@ config = {
   TEMPLATE_CODE: 'TEMPLATE_CODE',
   TARGET_PHONE: 'TARGET_PHONE',
   REMIND_TIME:'REMIND_TIME',
+  REMIND_TIME_WEEKEND:'REMIND_TIME_WEEKEND',
   APP_CODE: 'APP_CODE',
-  CITYID: 'CITYID'
+  CITY_ID: 'CITY_ID'
 }
 
 module.exports = (() => {
@@ -32,12 +33,15 @@ module.exports = (() => {
   if (process.env.REMIND_TIME != undefined) {
     config.REMIND_TIME = process.env.REMIND_TIME;
   }
+  if (process.env.REMIND_TIME_WEEKEND != undefined) {
+    config.REMIND_TIME_WEEKEND = process.env.REMIND_TIME_WEEKEND;
+  }
   
   if (process.env.APP_CODE != undefined) {
     config.APP_CODE = process.env.APP_CODE;
   }
-  if (process.env.CITYID != undefined) {
-    config.CITYID = process.env.CITYID;
+  if (process.env.CITY_ID != undefined) {
+    config.CITY_ID = process.env.CITY_ID;
   }
   return config
 })()

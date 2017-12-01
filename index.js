@@ -9,7 +9,7 @@ const SIGN_NAME = config.SIGN_NAME;
 const TEMPLATE_CODE = config.TEMPLATE_CODE;
 const TARGET_PHONE = config.TARGET_PHONE;
 const APP_CODE = config.APP_CODE;
-const CITY_ID = config.CITYID;
+const CITY_ID = config.CITY_ID;
 
 console.log("配置文件如下\n%s\n",JSON.stringify(config, null, "\t"))
 
@@ -72,18 +72,27 @@ var aliyunWeather=async (appCode, cityId)=>{
 
 aliyunWeather(APP_CODE,CITY_ID)
 
+//工作日配置
+var ruleWork = new schedule.RecurrenceRule();
+ruleWork.dayOfWeek = [new schedule.Range(1, 5)];
+ruleWork.hour = config.REMIND_TIME.split(':')[0];
+ruleWork.minute = config.REMIND_TIME.split(':')[1];
+var j = schedule.scheduleJob(ruleWork, function () {
+	console.log("当前短信发送时间",getNowFormatDate())
+	aliyunWeather(APP_CODE,CITY_ID)
+});
+
+//双休日配置
 var rule = new schedule.RecurrenceRule();
-rule.dayOfWeek = [new schedule.Range(0, 6)];
-rule.hour = config.REMIND_TIME.split(':')[0];
-rule.minute = config.REMIND_TIME.split(':')[1];
+rule.dayOfWeek = [0, 6];
+rule.hour = config.REMIND_TIME_WEEKEND.split(':')[0];
+rule.minute = config.REMIND_TIME_WEEKEND.split(':')[1];
 var j = schedule.scheduleJob(rule, function () {
 	console.log("当前短信发送时间",getNowFormatDate())
-	aliyunWeather(APP_CODE,CITYID)
+	aliyunWeather(APP_CODE,CITY_ID)
 });
-var date = new Date();
 
-
-console.log("每日发送时间%s:%s",rule.hour,rule.minute)
+console.log("每日发送时间%s:%s",ruleWork.hour,rule.minute)
 console.log("当前脚本运行时间",getNowFormatDate())
 	
 function say(phone, param) {
