@@ -3,11 +3,10 @@ config = {
   SERECT_ACCESS_KEY: 'SERECT_ACCESS_KEY',
   SIGN_NAME: 'namd',
   TEMPLATE_CODE: 'TEMPLATE_CODE',
-  CAI_YUN_API_KEY: 'CAI_YUN_API_KEY',
-  LONGITUDE: 'LONGITUDE',
-  LATITUDE: 'LATITUDE',
   TARGET_PHONE: 'TARGET_PHONE',
-  REMIND_TIME:'REMIND_TIME'
+  REMIND_TIME:'REMIND_TIME',
+  APP_CODE: 'APP_CODE',
+  CITYID: 'CITYID'
 }
 
 module.exports = (() => {
@@ -26,21 +25,19 @@ module.exports = (() => {
   if (process.env.TEMPLATE_CODE != undefined) {
     config.TEMPLATE_CODE = process.env.TEMPLATE_CODE;
   }
-  if (process.env.CAI_YUN_API_KEY != undefined) {
-    config.CAI_YUN_API_KEY = process.env.CAI_YUN_API_KEY;
-  }
-  if (process.env.LONGITUDE != undefined) {
-    config.LONGITUDE = process.env.LONGITUDE;
-  }
-  if (process.env.LATITUDE != undefined) {
-    config.LATITUDE = process.env.LATITUDE;
-  }
+  
   if (process.env.TARGET_PHONE != undefined) {
     config.TARGET_PHONE = process.env.TARGET_PHONE;
   }
   if (process.env.REMIND_TIME != undefined) {
     config.REMIND_TIME = process.env.REMIND_TIME;
   }
-
+  
+  if (process.env.APP_CODE != undefined) {
+    config.APP_CODE = process.env.APP_CODE;
+  }
+  if (process.env.CITYID != undefined) {
+    config.CITYID = process.env.CITYID;
+  }
   return config
 })()

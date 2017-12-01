@@ -7,10 +7,8 @@ const ACCESS_KEY_ID = config.ACCESS_KEY_ID;
 const SERECT_ACCESS_KEY = config.SERECT_ACCESS_KEY
 const SIGN_NAME = config.SIGN_NAME;
 const TEMPLATE_CODE = config.TEMPLATE_CODE;
-const CAI_YUN_API_KEY = config.CAI_YUN_API_KEY;
-const LONGITUDE = config.LONGITUDE;
-const LATITUDE = config.LATITUDE;
 const TARGET_PHONE = config.TARGET_PHONE;
+const APP_CODE = config.APP_CODE;
 
 console.log("配置文件如下\n%s\n",JSON.stringify(config, null, "\t"))
 
@@ -43,19 +41,50 @@ var getweather = async (token, longitude, latitude) => {
     })
 }
 
+//今天${city}天气: ${weather}. 温度: ${templow}至${temphigh}. 平均气温: ${temp}. 风速: ${windpower}. tips: ${notice}
+var aliyunWeather=async (appCode, cityId)=>{
+	url = 'http://jisutqybmf.market.alicloudapi.com/weather/query?cityid=' + cityId
+	var options = {
+		url: url,
+		headers: {
+			'Authorization': 'APPCODE '+ appCode
+		}
+	};
+    request(options, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            weather = JSON.parse(body);
+			console.log("get weather result: %s",JSON.stringify(weather, null, "\t"))
+            result = {
+				city: weather.result.city,
+				weather: weather.result.weather,
+				templow: weather.result.templow,
+				temphigh: weather.result.temphigh,
+				temp: weather.result.temp,
+				windpower: weather.result.windpower,
+				notice: "爱你的老公"
+            }
+            console.log("天气状况\n%s\n",JSON.stringify(result, null, "\t"))
+            say(TARGET_PHONE,JSON.stringify(result))
+        }
+    })
+}
+
+aliyunWeather(APP_CODE,CITYID)
+
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [new schedule.Range(0, 6)];
 rule.hour = config.REMIND_TIME.split(':')[0];
 rule.minute = config.REMIND_TIME.split(':')[1];
 var j = schedule.scheduleJob(rule, function () {
-    console.log("当前短信发送时间",getNowFormatDate())
-    getweather(CAI_YUN_API_KEY, LONGITUDE, LATITUDE)
+	console.log("当前短信发送时间",getNowFormatDate())
+	aliyunWeather(APP_CODE,CITYID)
 });
 var date = new Date();
 
+
 console.log("每日发送时间%s:%s",rule.hour,rule.minute)
 console.log("当前脚本运行时间",getNowFormatDate())
-
+	
 function say(phone, param) {
     const accessKeyId = ACCESS_KEY_ID
     const secretAccessKey = SERECT_ACCESS_KEY
